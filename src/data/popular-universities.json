@@ -1,0 +1,109 @@
+{
+  "popularUniversities": [
+    {
+      "name": "서울대학교",
+      "location": "서울특별시",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "연세대학교",
+      "location": "서울특별시",
+      "type": "사립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "부산대학교",
+      "location": "부산광역시",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "울산대학교",
+      "location": "울산광역시",
+      "type": "사립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "충남대학교",
+      "location": "대전광역시",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "인하대학교",
+      "location": "인천광역시",
+      "type": "사립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "경북대학교",
+      "location": "대구광역시",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "영남대학교",
+      "location": "경상북도",
+      "type": "사립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "전남대학교",
+      "location": "광주광역시",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "강원대학교",
+      "location": "강원특별자치도",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "공주대학교",
+      "location": "충청남도",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "전북대학교",
+      "location": "전북특별자치도",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "충북대학교",
+      "location": "충청북도",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "경상대학교",
+      "location": "경상남도",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    },
+    {
+      "name": "제주대학교",
+      "location": "제주특별자치도",
+      "type": "국립",
+      "address": "",
+      "description": ""
+    }
+  ]
+}
