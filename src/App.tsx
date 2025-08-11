@@ -1,12 +1,15 @@
 import React from "react";
 import "./App.css";
-import UniversitySearch from "./components/UniversitySearch";
+import MainScreen from "./components/MainScreen";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <UniversitySearch />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <MainScreen />
+      </div>
+    </BrowserRouter>
   );
 }
 
