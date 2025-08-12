@@ -3,6 +3,44 @@ import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { universityPairs } from "../data/universities";
 
+/** =========================
+ *  (NEW) 학교별 이미지 섹션 데이터
+ *  - src: 실제 이미지 경로로 변경하면 됨 (예: /images/snu/1.jpg)
+ ========================= */
+const UNIV_SECTIONS: {
+  id: string;
+  title: string; // 표기용
+  images: { src: string; alt?: string; href?: string }[];
+}[] = [
+  {
+    id: "snu",
+    title: "서울대학교",
+    images: Array.from({ length: 7 }).map((_, i) => ({
+      src: `/img${i + 1}.png`,
+      alt: `서울대학교 주변 숙소 샘플 ${i + 1}`,
+      href: `/search?near=${encodeURIComponent("서울대학교")}`,
+    })),
+  },
+  {
+    id: "ku",
+    title: "고려대학교",
+    images: Array.from({ length: 7 }).map((_, i) => ({
+      src: `/img${i + 7}.png`,
+      alt: `고려대학교 주변 숙소 샘플 ${i + 1}`,
+      href: `/search?near=${encodeURIComponent("고려대학교")}`,
+    })),
+  },
+  {
+    id: "yonsei",
+    title: "연세대학교",
+    images: Array.from({ length: 7 }).map((_, i) => ({
+      src: `/img${i + 14}.png`,
+      alt: `연세대학교 주변 숙소 샘플 ${i + 1}`,
+      href: `/search?near=${encodeURIComponent("연세대학교")}`,
+    })),
+  },
+];
+
 /* =========================
    상단바 아래 검색(Hero) + 자동완성
 ========================= */
@@ -24,7 +62,6 @@ const HeroSearch: React.FC = () => {
   const periodRef = React.useRef<HTMLDivElement>(null);
   const radiusRef = React.useRef<HTMLDivElement>(null);
 
-  // 외부 클릭 -> 모두 닫기
   React.useEffect(() => {
     const onDocClick = (e: MouseEvent) => {
       const t = e.target as Node;
@@ -45,7 +82,7 @@ const HeroSearch: React.FC = () => {
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
 
-  // ------- 1) 근처(대학) 자동완성 (한/영 분리) -------
+  // ------- 1) 근처(대학) 자동완성 -------
   const nearSuggestions = React.useMemo((): Array<{
     label: string;
     lang: "ko" | "en";
@@ -163,17 +200,13 @@ const HeroSearch: React.FC = () => {
     const raw = radius.trim().toLowerCase();
     if (!raw) return base;
 
-    // 숫자/소수점만 추출 (입력에 km, 공백 있어도 허용)
     const numTxt = raw.replace(/[^0-9.]/g, "");
     if (numTxt && !isNaN(Number(numTxt))) {
       const v = Number(numTxt);
       const dynamic = fmtKm(v);
-      // 동적 제안을 맨 위에, 그 외 프리셋 중 부분일치 필터
       const filtered = base.filter((s) => s.toLowerCase().includes(numTxt));
       return [dynamic, ...filtered.filter((s) => s !== dynamic)].slice(0, 8);
     }
-
-    // 일반 텍스트 필터
     return base.filter((s) => s.toLowerCase().includes(raw)).slice(0, 8);
   }, [radius]);
 
@@ -207,10 +240,9 @@ const HeroSearch: React.FC = () => {
     }
   };
 
-  // ------- 제출 -------
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ near, period, radius }); // TODO: 실제 검색 로직
+    console.log({ near, period, radius });
     setOpenNear(false);
     setOpenPeriod(false);
     setOpenRadius(false);
@@ -360,6 +392,46 @@ const HeroSearch: React.FC = () => {
   );
 };
 
+/** =========================
+ *  (NEW) 학교 이미지 그리드
+ ========================= */
+const UniversityRows: React.FC = () => {
+  return (
+    <section className="ys-univ">
+      {UNIV_SECTIONS.map((sec) => (
+        <div key={sec.id} className="ys-univ-row">
+          <h2 className="ys-univ-title">{sec.title}</h2>
+          <div className="ys-univ-grid">
+            {sec.images.map((img, i) => {
+              const card = (
+                <div className="ys-u-card" key={`${sec.id}-${i}`}>
+                  <img
+                    src={img.src}
+                    alt={img.alt ?? `${sec.title} 숙소 이미지`}
+                    loading="lazy"
+                  />
+                </div>
+              );
+              return img.href ? (
+                <Link
+                  key={`${sec.id}-${i}`}
+                  to={img.href}
+                  aria-label={`${sec.title} 주변 숙소 보기 ${i + 1}`}
+                  className="ys-u-link"
+                >
+                  {card}
+                </Link>
+              ) : (
+                card
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+};
+
 /* =========================
    Header (단일 선언!)
 ========================= */
@@ -390,8 +462,8 @@ const Header: React.FC = () => {
               className="ys-title-link"
               onClick={(e) => {
                 if (location.pathname === "/") {
-                  e.preventDefault(); // SPA 네비게이션 막고
-                  window.location.reload(); // 실제 새로고침
+                  e.preventDefault();
+                  window.location.reload();
                 }
               }}
             >
@@ -419,96 +491,56 @@ const Header: React.FC = () => {
 
       <main className="ys-main">
         <HeroSearch />
+        {/* (NEW) 학교 이미지 섹션 */}
+        <UniversityRows />
       </main>
 
       <style>{`
         :root {
-          --container-w: 1160px; /* 헤더/본문 컨테이너 */
-          --search-w: 1170px;    /* 검색바 너비 */
+          --container-w: 1160px;
+          --search-w: 1170px;
           --search-h: 38px;
         }
-        html, body {
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          text-rendering: optimizeLegibility;
-          -webkit-text-size-adjust: 100%;
-        }
-        .ys-header{
-          position: sticky; top: 12px; margin-top: 12px;
-          background: transparent; border: none; z-index: 50;
-          transform: none !important; filter: none !important; opacity: 1;
-          backface-visibility: hidden;
-        }
-        .ys-inner{
-          max-width: var(--container-w);
-          margin: 0 auto;
-          padding: 12px 28px;
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          gap: 20px;
-        }
-        .ys-brand{ display:flex; align-items:center; gap:24px; }
+        html, body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; -webkit-text-size-adjust: 100%; }
+        .ys-header{ position: static; top: auto; margin-top: 12px; background: transparent; border: none; z-index: 50; transform: none !important; filter: none !important; opacity: 1; backface-visibility: hidden; }
+        .ys-inner{ max-width: var(--container-w); margin: 0 auto; padding: 12px 28px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+        .ys-brand{ display:flex; align-items:center; gap:20px; }
         .ys-logo-link{ display:inline-flex; line-height:0; text-decoration:none; }
         .ys-logo{ width:60px; height:60px; object-fit:contain; }
         .ys-title{ margin:0; line-height:1.15; color:#111827; font-weight:700; font-size:20px; }
         .ys-title .sub{ font-weight:600; }
-        .ys-title-link{
-          text-decoration: none;
-          color: inherit;
-          cursor: pointer;
-          display: inline-block; /* 클릭 범위 명확 */
-        }
-        .ys-title-link:focus-visible{
-          outline: 2px solid #111;
-          outline-offset: 2px;
-        }
+        .ys-title-link{ text-decoration: none; color: inherit; cursor: pointer; display: inline-block; }
+        .ys-title-link:focus-visible{ outline: 2px solid #111; outline-offset: 2px; }
         .ys-quick{ display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
         .ys-link{ font-size:11px; color:#000; text-decoration:none; }
         .ys-link:hover{ opacity:0.8; text-decoration:none; }
 
-        .ys-main{
-          max-width: var(--container-w);  /* 1460px → var(--container-w) */
-          margin: 0 auto;
-          padding: 12px 28px 32px;
-        }
+        .ys-main{ max-width: var(--container-w); margin: 0 auto; padding: 12px 28px 40px; }
+
         /* ---------- 검색바 ---------- */
         .ys-hero{
           display: flex;
-          justify-content: flex-start;   /* 왼쪽 정렬 유지 */
-          margin-top: 8px;
-          width: var(--search-w);         /* 1170px */
-          max-width: none;                /* 부모(1160px) 제한 해제 */
-          margin-left: -10px;             /* ← 왼쪽으로 10px 더 길게 */
+          justify-content: center;   /* 가운데 정렬 */
+          margin-top: 12px;
+          width: 100%;               /* 컨테이너 폭을 100%로 */
+          max-width: 100%;
+          margin-left: auto;         /* 안전하게 중앙 */
+          margin-right: auto;
         }
-        .ys-search-wrap{
-          width: min(100%, 1040px);            /* ▶ width: min(100%, 1040px) → 100% */
-          display:flex; align-items:center; gap:12px;
-        }
-          /* 반응형: 좁아지면 원래대로 */
+        .ys-search-wrap{ width: min(100%, 1050px); display:flex; align-items:center; gap:12px; margin: 0 auto; }
         @media (max-width: 1200px){
-          .ys-hero{
-            width: 100%;
-            max-width: 100%;
-            margin-left: 0;
-          }
+          .ys-hero{ width: 100%; max-width: 100%; margin-left: 0; }
         }
         .ys-search{
           flex:1; display:flex; align-items:center;
           background:#fff; border:1px solid #E5E7EB; border-radius:9999px;
-          padding: 5px 13px; height: var(--search-h); min-height: var(--search-h); 
-          box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-          position: relative;
+          padding: 5px 13px; height: var(--search-h); min-height: var(--search-h);
+          box-shadow: 0 1px 2px rgba(0,0,0,0.04); position: relative;
         }
 
         /* 자동완성 */
         .ys-auto{ position:relative; flex:1; }
-        .ys-ac{
-          position:absolute; top:100%; left:0; right:0; margin-top:8px;
-          background:#fff; border:1px solid #E5E7EB; border-radius:12px;
-          box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-          max-height: 280px; overflow:auto; z-index: 60;
-        }
+        .ys-ac{ position:absolute; top:100%; left:0; right:0; margin-top:8px; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); max-height: 280px; overflow:auto; z-index: 60; }
         .ys-ac-item{ display:flex; justify-content:space-between; align-items:center; padding:10px 12px; cursor:pointer; gap:12px; }
         .ys-ac-item:hover, .ys-ac-item.is-active{ background:#F3F4F6; }
         .ys-ac-ko{ font-size:13px; color:#111827; font-weight:600; }
@@ -520,7 +552,6 @@ const Header: React.FC = () => {
         .ys-input::placeholder{ font-size:12px; color:#9CA3AF; }
         .ys-input--short{ flex:0.9; }
 
-        /* 구분선 */
         .ys-divider{ width:1px; height: 19px; background:#E5E7EB; margin:0 6px; }
 
         :root{ --g-start: #00E6D3; --g-end: #07E400; }
@@ -534,14 +565,45 @@ const Header: React.FC = () => {
         .ys-search-btn:hover{ transform: translateY(-1px); }
         .ys-search-btn:active{ transform: translateY(0); box-shadow: 0 2px 6px rgba(7, 228, 0, 0.22); }
         .ys-search-btn:focus-visible{ outline:2px solid var(--g-end); outline-offset:2px; }
-
+      
         @media (max-width: 720px){
+          .ys-logo { margin-left: 0px; }
           .ys-search-wrap{ flex-direction:column; gap:10px; width:100%; }
           .ys-search{ width:100%; padding:8px 12px; height: var(--search-h); min-height: var(--search-h); max-height: var(--search-h); }
           .ys-divider{ display:none; }
           .ys-input{ padding:8px 6px; font-size:13px; }
           .ys-search-btn{ width:100%; height:42px; height: var(--search-h); }
         }
+
+        /* ---------- (NEW) 학교 이미지 그리드 ---------- */
+        .ys-univ{ margin-top: 42px; }
+        .ys-univ-row + .ys-univ-row{ margin-top: 32px; }
+        .ys-univ-title{
+          margin: 12px 6px 10px;
+          font-size: 12px; line-height: 1; color: #000; font-weight: 700;
+        }
+        /* 큰 화면: 7열 고정, 작은 화면: 가로 스크롤 */
+        .ys-univ-grid{
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          gap: 12px;
+        }
+        @media (max-width: 1200px){
+          .ys-univ-grid{
+            display: flex; gap: 12px; overflow-x: auto; padding-bottom: 2px;
+            scroll-snap-type: x mandatory;
+          }
+          .ys-u-link, .ys-u-card{ scroll-snap-align: start; min-width: 150px; }
+        }
+        .ys-u-link{ text-decoration: none; }
+        .ys-u-card{
+          position: relative; border-radius: 14px; overflow: hidden; background: #F3F4F6;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+          transition: transform .08s ease, box-shadow .12s ease;
+          aspect-ratio: 1 / 1;
+        }
+        .ys-u-card:hover{ transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,0.12); }
+        .ys-u-card img{ width: 100%; height: 100%; object-fit: cover; display:block; }
       `}</style>
     </>
   );
