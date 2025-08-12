@@ -521,7 +521,7 @@ const Header: React.FC = () => {
         .ys-hero{
           display: flex;
           justify-content: center;   /* 가운데 정렬 */
-          margin-top: 12px;
+          margin-top: 6px;
           width: 100%;               /* 컨테이너 폭을 100%로 */
           max-width: 100%;
           margin-left: auto;         /* 안전하게 중앙 */
