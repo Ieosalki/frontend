@@ -2,7 +2,7 @@
 :root {
   --container-w: 1160px;
   --search-w: 1170px;
-  --search-h: 38px;
+  --search-h: 42px;
   --g-start: #00e6d3;
   --g-end: #07e400;
 }
@@ -188,7 +188,7 @@ body {
 /* 입력칸 */
 .ys-input {
   flex: 1;
-  font-size: 13px;
+  font-size: 14px;
   height: 100%;
   border: 0;
   outline: none;
@@ -228,13 +228,7 @@ body {
   box-shadow: 0 4px 10px rgba(7, 228, 0, 0.28);
   transition: transform 0.06s ease, box-shadow 0.12s ease, opacity 0.12s ease;
 }
-.ys-search-btn:hover {
-  transform: translateY(-1px);
-}
-.ys-search-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(7, 228, 0, 0.22);
-}
+
 .ys-search-btn:focus-visible {
   outline: 2px solid var(--g-end);
   outline-offset: 2px;

@@ -6,7 +6,7 @@
 
 .ys-univ-title {
   margin: 12px 6px 10px;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1;
   color: #000;
   font-weight: 700;
@@ -41,13 +41,10 @@
   transition: transform 0.08s ease, box-shadow 0.12s ease;
   aspect-ratio: 1 / 1;
 }
-.ys-u-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-}
+
 .ys-u-card img {
-  width: 150px;
-  height: 150px;
+  width: 147px;
+  height: 147px;
   object-fit: cover;
   display: block;
 }
