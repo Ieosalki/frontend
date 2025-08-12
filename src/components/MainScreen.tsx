@@ -425,6 +425,7 @@ const Header: React.FC = () => {
         :root {
           --container-w: 1160px; /* 헤더/본문 컨테이너 */
           --search-w: 1170px;    /* 검색바 너비 */
+          --search-h: 38px;
         }
         html, body {
           -webkit-font-smoothing: antialiased;
@@ -463,7 +464,7 @@ const Header: React.FC = () => {
           outline-offset: 2px;
         }
         .ys-quick{ display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
-        .ys-link{ font-size:10px; color:#000; text-decoration:none; }
+        .ys-link{ font-size:11px; color:#000; text-decoration:none; }
         .ys-link:hover{ opacity:0.8; text-decoration:none; }
 
         .ys-main{
@@ -495,7 +496,8 @@ const Header: React.FC = () => {
         .ys-search{
           flex:1; display:flex; align-items:center;
           background:#fff; border:1px solid #E5E7EB; border-radius:9999px;
-          padding: 5px 13px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+          padding: 5px 13px; height: var(--search-h); min-height: var(--search-h); 
+          box-shadow: 0 1px 2px rgba(0,0,0,0.04);
           position: relative;
         }
 
@@ -514,7 +516,7 @@ const Header: React.FC = () => {
         .ys-ac-empty{ padding:10px 13px; font-size:12px; color:#6B7280; }
 
         /* 입력칸 */
-        .ys-input{ flex:1; font-size:13px; border:0; outline:none; background:transparent; padding: 5px 7px; min-width:0; }
+        .ys-input{ flex:1; font-size:13px; height: 100%; border:0; outline:none; background:transparent; padding:8px 6px; min-width:0; }
         .ys-input::placeholder{ font-size:12px; color:#9CA3AF; }
         .ys-input--short{ flex:0.9; }
 
@@ -524,7 +526,7 @@ const Header: React.FC = () => {
         :root{ --g-start: #00E6D3; --g-end: #07E400; }
         .ys-search-btn{
           flex:0 0 auto; border:0; cursor:pointer; height: 38px; padding:0 15px; border-radius:9999px;
-          font-weight:700; font-size:14px; color:#fff;
+          font-weight:700; font-size:14px; color:#fff; height: var(--search-h);
           background: linear-gradient(180deg, var(--g-start) 0%, var(--g-end) 100%);
           box-shadow: 0 4px 10px rgba(7, 228, 0, 0.28);
           transition: transform .06s ease, box-shadow .12s ease, opacity .12s ease;
@@ -535,10 +537,10 @@ const Header: React.FC = () => {
 
         @media (max-width: 720px){
           .ys-search-wrap{ flex-direction:column; gap:10px; width:100%; }
-          .ys-search{ width:100%; padding:8px 12px; }
+          .ys-search{ width:100%; padding:8px 12px; height: var(--search-h); min-height: var(--search-h); max-height: var(--search-h); }
           .ys-divider{ display:none; }
           .ys-input{ padding:8px 6px; font-size:13px; }
-          .ys-search-btn{ width:100%; height:42px; }
+          .ys-search-btn{ width:100%; height:42px; height: var(--search-h); }
         }
       `}</style>
     </>
