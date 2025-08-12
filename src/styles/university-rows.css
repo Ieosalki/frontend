@@ -1,0 +1,53 @@
+/* ===== UniversityRows styles ===== */
+
+.ys-univ-row + .ys-univ-row {
+  margin-top: 32px;
+}
+
+.ys-univ-title {
+  margin: 12px 6px 10px;
+  font-size: 12px;
+  line-height: 1;
+  color: #000;
+  font-weight: 700;
+}
+
+.ys-univ-grid {
+  display: flex;
+  flex-wrap: nowrap; /* 줄바꿈 금지 → 한 줄 */
+  gap: 12px;
+  overflow-x: auto; /* 가로 스크롤 */
+  padding-bottom: 2px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ys-u-link,
+.ys-u-card {
+  scroll-snap-align: start;
+  flex: 0 0 auto; /* 아이템 크기 고정 */
+}
+
+.ys-u-link {
+  text-decoration: none;
+}
+
+.ys-u-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f3f4f6;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: transform 0.08s ease, box-shadow 0.12s ease;
+  aspect-ratio: 1 / 1;
+}
+.ys-u-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+.ys-u-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}

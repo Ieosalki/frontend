@@ -1,13 +1,15 @@
 import "./App.css";
-import MainScreen from "./components/MainScreen";
-import { BrowserRouter } from "react-router-dom";
+import MainScreen from "./pages/MainScreen";
+import SearchResultsPage from "./pages/SearchResultsScreen";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
-        <MainScreen />
-      </div>
+      <Routes>
+        <Route path="/" element={<MainScreen />} />
+        <Route path="/search" element={<SearchResultsPage />} />
+      </Routes>
     </BrowserRouter>
   );
 }

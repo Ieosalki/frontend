@@ -1,0 +1,292 @@
+/* ===== MainScreen global styles ===== */
+:root {
+  --container-w: 1160px;
+  --search-w: 1170px;
+  --search-h: 38px;
+  --g-start: #00e6d3;
+  --g-end: #07e400;
+}
+
+html,
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* 헤더(고정 해제) */
+.ys-header {
+  position: static;
+  top: auto;
+  margin-top: 12px;
+  background: transparent;
+  border: none;
+  z-index: 50;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1;
+  backface-visibility: hidden;
+}
+
+.ys-inner {
+  max-width: var(--container-w);
+  margin: 0 auto;
+  padding: 12px 28px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ys-brand {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.ys-logo-link {
+  display: inline-flex;
+  line-height: 0;
+  text-decoration: none;
+}
+.ys-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.ys-title {
+  margin: 0;
+  line-height: 1.15;
+  color: #111827;
+  font-weight: 700;
+  font-size: 20px;
+}
+.ys-title .sub {
+  font-weight: 600;
+}
+.ys-title-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  display: inline-block;
+}
+.ys-title-link:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+.ys-quick {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.ys-link {
+  font-size: 11px;
+  color: #000;
+  text-decoration: none;
+}
+.ys-link:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.ys-main {
+  max-width: var(--container-w);
+  margin: 0 auto;
+  padding: 12px 28px 40px;
+}
+
+/* ---------- 검색바 ---------- */
+.ys-hero {
+  display: flex;
+  justify-content: center;
+  margin-top: 6px;
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ys-search-wrap {
+  width: min(100%, 1050px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .ys-hero {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+  }
+}
+
+.ys-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  padding: 5px 13px;
+  height: var(--search-h);
+  min-height: var(--search-h);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+/* 자동완성 */
+.ys-auto {
+  position: relative;
+  flex: 1;
+}
+.ys-ac {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  max-height: 280px;
+  overflow: auto;
+  z-index: 60;
+}
+.ys-ac-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+  gap: 12px;
+}
+.ys-ac-item:hover,
+.ys-ac-item.is-active {
+  background: #f3f4f6;
+}
+.ys-ac-ko {
+  font-size: 13px;
+  color: #111827;
+  font-weight: 600;
+}
+.ys-ac-en {
+  font-size: 13px;
+  color: #6b7280;
+}
+.ys-ac-empty {
+  padding: 10px 13px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* 입력칸 */
+.ys-input {
+  flex: 1;
+  font-size: 13px;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 8px 6px;
+  min-width: 0;
+}
+.ys-input::placeholder {
+  font-size: 12px;
+  color: #9ca3af;
+}
+.ys-input--short {
+  flex: 0.9;
+}
+
+/* 구분선 */
+.ys-divider {
+  width: 1px;
+  height: 19px;
+  background: #e5e7eb;
+  margin: 0 6px;
+}
+
+/* 검색 버튼 */
+.ys-search-btn {
+  flex: 0 0 auto;
+  border: 0;
+  cursor: pointer;
+  height: 38px;
+  padding: 0 15px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  height: var(--search-h);
+  background: linear-gradient(180deg, var(--g-start) 0%, var(--g-end) 100%);
+  box-shadow: 0 4px 10px rgba(7, 228, 0, 0.28);
+  transition: transform 0.06s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+.ys-search-btn:hover {
+  transform: translateY(-1px);
+}
+.ys-search-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(7, 228, 0, 0.22);
+}
+.ys-search-btn:focus-visible {
+  outline: 2px solid var(--g-end);
+  outline-offset: 2px;
+}
+
+/* 바뀌는 영역(추천/검색결과) 공통 상단 여백을 여기서만 줘 */
+.ys-content-slot {
+  margin-top: 42px;
+}
+
+/* UniversityRows는 기존대로면 OK, SearchResults는 꼭 위 여백 0 */
+.ys-results {
+  margin-top: 0;
+}
+
+.ys-empty {
+  min-height: 50vh; /* 화면의 40% 높이로 중앙 배치 느낌 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #6b7280; /* gray-500 느낌 */
+  text-align: center;
+}
+
+/* 모바일 */
+@media (max-width: 720px) {
+  .ys-logo {
+    margin-left: 0px;
+  }
+  .ys-search-wrap {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  .ys-search {
+    width: 100%;
+    padding: 8px 12px;
+    height: var(--search-h);
+    min-height: var(--search-h);
+    max-height: var(--search-h);
+  }
+  .ys-divider {
+    display: none;
+  }
+  .ys-input {
+    padding: 8px 6px;
+    font-size: 13px;
+  }
+  .ys-search-btn {
+    width: 100%;
+    height: 42px;
+    height: var(--search-h);
+  }
+}
