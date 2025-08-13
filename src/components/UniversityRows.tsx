@@ -4,11 +4,16 @@ import { Link } from "react-router-dom";
 import "../styles/university-rows.css";
 
 export type UnivImage = { src: string; alt?: string; href?: string };
-export type UnivSection = { id: string; title: string; images: UnivImage[] };
+export type UnivSection = {
+  id: string;
+  title: string;
+  images: UnivImage[];
+  href?: string; // 🔹 섹션 타이틀 링크(옵션)
+};
 
 interface Props {
   sections: UnivSection[];
-  className?: string; // 필요하면 외부에서 여백/위치 조정용
+  className?: string;
 }
 
 const UniversityRows: React.FC<Props> = ({ sections, className }) => {
@@ -16,36 +21,52 @@ const UniversityRows: React.FC<Props> = ({ sections, className }) => {
 
   return (
     <section className={`ys-univ ${className ?? ""}`}>
-      {sections.map((sec) => (
-        <div key={sec.id} className="ys-univ-row">
-          <h2 className="ys-univ-title">{sec.title}</h2>
-          <div className="ys-univ-grid">
-            {sec.images.map((img, i) => {
-              const card = (
-                <div className="ys-u-card" key={`${sec.id}-${i}`}>
-                  <img
-                    src={img.src}
-                    alt={img.alt ?? `${sec.title} 숙소 이미지`}
-                    loading="lazy"
-                  />
-                </div>
-              );
-              return img.href ? (
+      {sections.map((sec) => {
+        const titleHref = sec.href ?? sec.images.find((im) => im.href)?.href;
+
+        return (
+          <div key={sec.id} className="ys-univ-row">
+            <h2 className="ys-univ-title">
+              {titleHref ? (
                 <Link
-                  key={`${sec.id}-${i}`}
-                  to={img.href}
-                  aria-label={`${sec.title} 주변 숙소 보기 ${i + 1}`}
-                  className="ys-u-link"
+                  to={titleHref}
+                  className="ys-univ-title-link"
+                  aria-label={sec.title}
                 >
-                  {card}
+                  {sec.title}
                 </Link>
               ) : (
-                card
-              );
-            })}
+                sec.title
+              )}
+            </h2>
+
+            <div className="ys-univ-grid">
+              {sec.images.map((img, i) => {
+                const label = img.alt ?? `${sec.title} ${i + 1}`;
+
+                return (
+                  <div>
+                    <button
+                      type="button"
+                      className="ys-u-card"
+                      aria-label={`${label} 이미지`}
+                      onClick={() => {
+                        /* TODO: 이미지 클릭 시 액션 */
+                      }}
+                    >
+                      <img
+                        src={img.src}
+                        alt={img.alt ?? `${sec.title} 숙소 이미지`}
+                        loading="lazy"
+                      />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </section>
   );
 };
