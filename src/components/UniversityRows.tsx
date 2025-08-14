@@ -1,15 +1,9 @@
 // src/components/UniversityRows.tsx
 import * as React from "react";
 import { Link } from "react-router-dom";
+import type { UnivSection, UnivImage } from "../types/university";
 import "../styles/university-rows.css";
-
-export type UnivImage = { src: string; alt?: string; href?: string };
-export type UnivSection = {
-  id: string;
-  title: string;
-  images: UnivImage[];
-  href?: string; // 🔹 섹션 타이틀 링크(옵션)
-};
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   sections: UnivSection[];
@@ -17,12 +11,21 @@ interface Props {
 }
 
 const UniversityRows: React.FC<Props> = ({ sections, className }) => {
+  const navigate = useNavigate();
   if (!sections || sections.length === 0) return null;
+
+  const getImageHref = (img: UnivImage, sec: UnivSection) => {
+    if (img.id) {
+      const base = (sec.detailBasePath ?? "/buildings").replace(/\/+$/, "");
+      return `${base}/${encodeURIComponent(img.id)}`; // ← 인코딩
+    }
+    return undefined;
+  };
 
   return (
     <section className={`ys-univ ${className ?? ""}`}>
       {sections.map((sec) => {
-        const titleHref = sec.href ?? sec.images.find((im) => im.href)?.href;
+        const titleHref = sec.href;
 
         return (
           <div key={sec.id} className="ys-univ-row">
@@ -43,23 +46,48 @@ const UniversityRows: React.FC<Props> = ({ sections, className }) => {
             <div className="ys-univ-grid">
               {sec.images.map((img, i) => {
                 const label = img.alt ?? `${sec.title} ${i + 1}`;
+                const detailHref = getImageHref(img, sec);
+                if (import.meta.env.DEV && !detailHref) {
+                  console.warn("[UniversityRows] 링크 없음 - id 누락?", {
+                    section: sec.id,
+                    img,
+                  });
+                }
 
                 return (
-                  <div>
-                    <button
-                      type="button"
-                      className="ys-u-card"
-                      aria-label={`${label} 이미지`}
-                      onClick={() => {
-                        /* TODO: 이미지 클릭 시 액션 */
-                      }}
-                    >
-                      <img
-                        src={img.src}
-                        alt={img.alt ?? `${sec.title} 숙소 이미지`}
-                        loading="lazy"
-                      />
-                    </button>
+                  <div key={img.id ?? i} className="ys-u-item">
+                    {detailHref ? (
+                      <button
+                        type="button"
+                        className="ys-u-card"
+                        aria-label={`${label} 상세페이지로 이동`}
+                        onClick={() => navigate(detailHref)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            navigate(detailHref);
+                          }
+                        }}
+                      >
+                        <img
+                          src={img.src}
+                          alt={img.alt ?? `${sec.title} 숙소 이미지`}
+                          loading="lazy"
+                        />
+                      </button>
+                    ) : (
+                      <div
+                        className="ys-u-card"
+                        role="img"
+                        aria-label={`${label} 이미지`}
+                      >
+                        <img
+                          src={img.src}
+                          alt={img.alt ?? `${sec.title} 숙소 이미지`}
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
                   </div>
                 );
               })}

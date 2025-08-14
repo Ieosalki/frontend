@@ -33,3 +33,19 @@ export interface SimpleUniversity {
   type: string;
   address: string;
 }
+
+// src/types/university.ts
+export type UnivImage = {
+  src: string;
+  alt?: string;
+  href?: string; // (옵션) 개별 상세 링크
+  id?: string; // (옵션) 상세 페이지 식별자 -> /buildings/:id
+};
+
+export type UnivSection = {
+  id: string;
+  title: string;
+  images: UnivImage[];
+  href?: string; // (옵션) 섹션 타이틀 클릭 시 이동 경로
+  detailBasePath?: string; // (옵션) 이미지 클릭 기본 경로. 기본: "/buildings"
+};

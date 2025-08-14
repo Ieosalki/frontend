@@ -39,6 +39,8 @@
 }
 
 .ys-u-card {
+  display: block; /* ← Link가 a인 경우 영역 보장 */
+  pointer-events: auto; /* ← 혹시 상위에서 none 줬을 가능성 대비 */
   border: none;
   outline: none;
   position: relative;
@@ -61,6 +63,11 @@
   text-decoration: none;
   line-height: 1.2;
   cursor: pointer;
+}
+
+.ys-u-card:focus-visible {
+  outline: 2px solid #111; /* 키보드 접근성도 함께 챙기기 */
+  outline-offset: 2px;
 }
 
 .ys-u-card img {
